@@ -139,10 +139,6 @@ main {
   top: 0.75rem;
 }
 
-.jen-uzke {
-  display: none;
-}
-
 /* ── Tlačítka a odkazy ──────────────────────────────────────────────────────────────────────── */
 .tlacitko {
   display: inline-flex;
@@ -241,7 +237,7 @@ main {
 }
 
 .hlavicka__telefon,
-.hlavicka__poptavka {
+.hlavicka__kontakt {
   flex: none;
 }
 
@@ -967,13 +963,8 @@ main {
   }
 
   .menu,
-  .hlavicka__telefon span,
-  .jen-siroke {
+  .hlavicka__telefon span {
     display: none;
-  }
-
-  .jen-uzke {
-    display: inline;
   }
 
   .hlavicka__telefon {
