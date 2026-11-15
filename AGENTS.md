@@ -58,7 +58,10 @@ npx astro check              # typová kontrola
   ukládání nástrojem snadno změní na neviditelný znak.
 - **Formulář:** `api/poptavka.ts` je záměrně soběstačný (bez importů ze `src/`). Při `npm run dev` ho
   obsluhuje plugin v `astro.config.mjs`; bez `RESEND_API_KEY` běží nanečisto a e-mail jen vypíše do
-  konzole. Funguje i bez JavaScriptu (přesměruje na `/odeslano`).
+  konzole. Funguje i bez JavaScriptu (přesměruje na `/odeslano`). Roboty chytá skryté pole a měření
+  času (tiše, s odpovědí 200), požadavek z cizí stránky dostane 403. Když chybí hlavičky, podle
+  kterých se původ pozná, poptávka projde – skutečnou poptávku nesmíme ztratit. CAPTCHA tu není
+  záměrně; počet odeslání hlídá pravidlo ve Firewallu na Vercelu.
 - **Písma jen z vlastního webu** (`@fontsource`), žádné cizí domény – jinak je potřeba upravit CSP
   ve `vercel.json`. Web nepoužívá cookies ani měření.
 - **URL bez koncového lomítka** (`trailingSlash: 'never'`, `build.format: 'file'`, ve `vercel.json`

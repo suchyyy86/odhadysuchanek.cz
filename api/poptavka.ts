@@ -8,6 +8,10 @@
 //
 // Soubor je záměrně soběstačný – bez importů z src/, aby ho Vercel sestavil bez překvapení.
 // Při vývoji ho spouští plugin v astro.config.mjs; bez klíče běží nanečisto a e-mail jen vypíše.
+//
+// Ochrana proti zneužití: příjemce je pevně daný, poptávku přijmeme jen ze stránky na stejné
+// adrese, roboty chytá skryté pole a měření času a všechna pole se zkracují a čistí. Počet
+// odeslání z jedné adresy hlídá pravidlo ve Firewallu na Vercelu, ne tento soubor.
 
 type Poptavka = {
   jmeno: string;
@@ -23,6 +27,29 @@ const NEDORUCENO = 'Poptávku se nepodařilo odeslat.';
 
 const text = (hodnota: unknown, nejvic: number) =>
   typeof hodnota === 'string' ? hodnota.trim().slice(0, nejvic) : '';
+
+/** Jednořádkové pole: zalomení a jiné řídicí znaky do jména, telefonu ani e-mailu nepatří
+    a nesmějí se dostat do předmětu zprávy. Nahradí je mezera. */
+const radek = (hodnota: unknown, nejvic: number) =>
+  text(typeof hodnota === 'string' ? hodnota.replace(/[\p{Cc}\p{Zl}\p{Zp}]+/gu, ' ') : hodnota, nejvic);
+
+/**
+ * Přišel požadavek z jiné stránky než z našeho webu? Prohlížeč to u odeslání formuláře hlásí
+ * hlavičkami Sec-Fetch-Site a Origin. Když chybějí (starší prohlížeč, doplněk na ochranu soukromí),
+ * necháme požadavek projít: ztratit skutečnou poptávku je horší než pustit robota, na toho jsou
+ * další pasti níže.
+ */
+function jeOdjinud(request: Request): boolean {
+  if (request.headers.get('sec-fetch-site') === 'cross-site') return true;
+  const puvod = request.headers.get('origin');
+  if (!puvod || puvod === 'null') return false;
+  const tady = [request.headers.get('x-forwarded-host'), request.headers.get('host')];
+  try {
+    return !tady.includes(new URL(puvod).host);
+  } catch {
+    return true;
+  }
+}
 
 const doHtml = (hodnota: string) =>
   hodnota
@@ -48,6 +75,10 @@ export async function POST(request: Request): Promise<Response> {
   // Bez JavaScriptu prohlížeč pošle formulář jako application/x-www-form-urlencoded.
   const klasicky = !(request.headers.get('content-type') ?? '').includes('application/json');
 
+  if (jeOdjinud(request)) {
+    return odpovez(klasicky, 403, NEDORUCENO);
+  }
+
   if (Number(request.headers.get('content-length') ?? 0) > NEJVETSI_TELO) {
     return odpovez(klasicky, 413, 'Zpráva je příliš dlouhá. Zkraťte ji prosím.');
   }
@@ -60,18 +91,20 @@ export async function POST(request: Request): Promise<Response> {
     return odpovez(klasicky, 400, 'Poptávku se nepodařilo přečíst. Zkuste ji prosím odeslat znovu.');
   }
 
-  // Past na roboty: skryté pole vyplní jen stroj, stejně jako odeslání do dvou vteřin od načtení.
+  // Pasti na roboty. Skryté pole vyplní jen stroj. Skript na stránce navíc vždy posílá, jak dlouho
+  // byl formulář otevřený: když ten údaj chybí nebo je kratší než dvě vteřiny, neposílal to člověk.
+  // Formulář odeslaný klasicky (bez skriptu) dobu nemá, tam se neposuzuje.
   // Tváříme se, že vše prošlo, ať robot nezkouší jiné cesty.
-  const rychle = typeof data.doba === 'number' && data.doba < 2000;
+  const rychle = !klasicky && !(typeof data.doba === 'number' && data.doba >= 2000);
   if (text(data.web_adresa, 200) || rychle) {
     return odpovez(klasicky, 200);
   }
 
   const poptavka: Poptavka = {
-    jmeno: text(data.jmeno, 120),
-    telefon: text(data.telefon, 30),
-    email: text(data.email, 200),
-    nemovitost: text(data.nemovitost, 60),
+    jmeno: radek(data.jmeno, 120),
+    telefon: radek(data.telefon, 30),
+    email: radek(data.email, 200),
+    nemovitost: radek(data.nemovitost, 60),
     zprava: text(data.zprava, 4000),
   };
 
