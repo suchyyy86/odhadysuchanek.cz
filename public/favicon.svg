@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <clipPath id="tvar"><rect width="64" height="64" rx="14"/></clipPath>
+  </defs>
+  <g clip-path="url(#tvar)">
+    <rect width="64" height="64" fill="#1d4c84"/>
+    <g transform="rotate(-16 32 32)">
+      <path d="M-12 19h88M-12 45h88M11 19v26M53 19v26M-2 -8v27M26 -8v27M40 45v28M64 45v28" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="2.5"/>
+      <rect x="19" y="19" width="26" height="26" fill="#f4b740"/>
+    </g>
+  </g>
+</svg>

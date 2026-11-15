@@ -1,0 +1,180 @@
+---
+import Base from '../layouts/Base.astro';
+import Mapa from '../components/Mapa.astro';
+import Portret from '../components/Portret.astro';
+import Formular from '../components/Formular.astro';
+import { cz, NBSP, pevne } from '../utils/cz';
+import { znalec, uvod, sluzby, proc, prubeh, cenik, cenaPolozky, dotazy, kontakt } from '../data/site';
+import { schemaUvodu } from '../data/seo';
+
+const telefon = pevne(znalec.telefon);
+
+---
+
+<Base uvodni schema={schemaUvodu}>
+  <section class="uvod">
+    <div class="obal uvod__mriz">
+      <div class="uvod__text">
+        <h1 class="uvod__nadpis">
+          <span class="uvod__jmeno">{znalec.jmeno.replace(' ', NBSP)}</span>
+          <span class="uvod__role">{uvod.role}</span>
+        </h1>
+        <p class="uvod__popis">{cz(uvod.text)}</p>
+        <div class="uvod__akce">
+          <a class="tlacitko tlacitko--zlate tlacitko--velke" href="#kontakt">{uvod.tlacitko}</a>
+          <a class="tlacitko tlacitko--obrys tlacitko--velke" href={znalec.telefonOdkaz}>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"
+              ></path>
+            </svg>
+            Zavolat {telefon}
+          </a>
+        </div>
+      </div>
+
+      <div class="uvod__vizual">
+        <Mapa class="uvod__mapa" />
+        <div class="uvod__foto">
+          <Portret />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sekce" id="sluzby" aria-labelledby="sluzby-nadpis">
+    <div class="obal sekce__mriz">
+      <h2 class="sekce__nadpis" id="sluzby-nadpis">{cz(sluzby.nadpis)}</h2>
+      <div class="sekce__obsah">
+        <p class="perex">{cz(sluzby.text)}</p>
+        <dl class="radky">
+          {
+            sluzby.situace.map((s) => (
+              <div class="radky__radek">
+                <dt>{cz(s.nazev)}</dt>
+                <dd>{cz(s.popis)}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section class="sekce" id="proc" aria-labelledby="proc-nadpis">
+    <div class="obal sekce__mriz">
+      <h2 class="sekce__nadpis" id="proc-nadpis">{cz(proc.nadpis)}</h2>
+      <ul class="sekce__obsah duvody">
+        {
+          proc.duvody.map((d) => (
+            <li>
+              <h3>{cz(d.nazev)}</h3>
+              <p>{cz(d.popis)}</p>
+              {d.odkaz && (
+                <a class="odkaz" href={d.odkaz.url} target="_blank" rel="noopener">
+                  {cz(d.odkaz.text)}
+                </a>
+              )}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="sekce sekce--pas" id="prubeh" aria-labelledby="prubeh-nadpis">
+    <div class="obal">
+      <h2 class="sekce__nadpis" id="prubeh-nadpis">{cz(prubeh.nadpis)}</h2>
+      <ol class="kroky">
+        {
+          prubeh.kroky.map((k) => (
+            <li>
+              <h3>{cz(k.nazev)}</h3>
+              <p>{cz(k.popis)}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="sekce" id="cenik" aria-labelledby="cenik-nadpis">
+    <div class="obal sekce__mriz">
+      <h2 class="sekce__nadpis" id="cenik-nadpis">{cz(cenik.nadpis)}</h2>
+      <div class="sekce__obsah">
+        <table class="cenik">
+          <caption class="skryte">Orientační ceny ocenění podle typu nemovitosti</caption>
+          <thead class="skryte">
+            <tr>
+              <th scope="col">Nemovitost</th>
+              <th scope="col">Cena</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              cenik.polozky.map((p) => (
+                <tr>
+                  <th scope="row">{cz(p.nazev)}</th>
+                  <td>{pevne(cenaPolozky(p))}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+        <p class="poznamka">{cz(cenik.poznamka)}</p>
+        <a class="odkaz" href="#kontakt">{cz(cenik.odkaz)}</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="sekce" id="dotazy" aria-labelledby="dotazy-nadpis">
+    <div class="obal sekce__mriz">
+      <h2 class="sekce__nadpis" id="dotazy-nadpis">{cz(dotazy.nadpis)}</h2>
+      <div class="sekce__obsah dotazy">
+        {
+          dotazy.seznam.map((d) => (
+            <details>
+              <summary>
+                <span>{cz(d.otazka)}</span>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path class="dotazy__vodorovna" d="M5 12h14" />
+                  <path class="dotazy__svisla" d="M12 5v14" />
+                </svg>
+              </summary>
+              <p>{cz(d.odpoved)}</p>
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="kontakt" id="kontakt" aria-labelledby="kontakt-nadpis">
+    <div class="obal kontakt__mriz">
+      <div class="kontakt__udaje">
+        <h2 class="kontakt__nadpis" id="kontakt-nadpis">{cz(kontakt.nadpis)}</h2>
+        <p class="kontakt__text">{cz(kontakt.text)}</p>
+        <a class="kontakt__telefon" href={znalec.telefonOdkaz}>{telefon}</a>
+        <a class="kontakt__email" href={`mailto:${znalec.email}`}>{znalec.email}</a>
+        <address class="kontakt__adresa">
+          {znalec.jmeno}<br />
+          {znalec.ulice}<br />
+          {pevne(znalec.psc)} {znalec.mesto}
+        </address>
+        <dl class="kontakt__dalsi">
+          <div>
+            <dt>IČO</dt>
+            <dd>{znalec.ico}</dd>
+          </div>
+          <div>
+            <dt>Datová schránka</dt>
+            <dd>{znalec.datovaSchranka}</dd>
+          </div>
+        </dl>
+      </div>
+      <div class="kontakt__formular">
+        <Formular />
+      </div>
+    </div>
+  </section>
+</Base>

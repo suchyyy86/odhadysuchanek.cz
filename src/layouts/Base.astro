@@ -1,0 +1,121 @@
+---
+import '@fontsource-variable/besley/wght.css';
+import '@fontsource-variable/libre-franklin/wght.css';
+import '../styles/global.css';
+// Česky sázený text potřebuje obě sady (latin i latin-ext), proto se přednačítají obě.
+import besley from '@fontsource-variable/besley/files/besley-latin-wght-normal.woff2?url';
+import besleyExt from '@fontsource-variable/besley/files/besley-latin-ext-wght-normal.woff2?url';
+import franklin from '@fontsource-variable/libre-franklin/files/libre-franklin-latin-wght-normal.woff2?url';
+import franklinExt from '@fontsource-variable/libre-franklin/files/libre-franklin-latin-ext-wght-normal.woff2?url';
+import { web, znalec } from '../data/site';
+import { NBSP, pevne } from '../utils/cz';
+
+interface Props {
+  title?: string;
+  description?: string;
+  noindex?: boolean;
+  schema?: Record<string, unknown>;
+  /** Úvodní stránka: odkazy v menu jsou jen kotvy (#kontakt), jinde vedou zpět na úvod (/#kontakt). */
+  uvodni?: boolean;
+}
+
+const { title = web.titulek, description = web.popis, noindex = false, schema, uvodni = false } = Astro.props;
+
+// Při buildu je cesta úvodní stránky „/index.html“, při vývoji „/“ – kanonická adresa je vždy „/“.
+const cesta = Astro.url.pathname
+  .replace(/\.html$/, '')
+  .replace(/\/index$/, '')
+  .replace(/\/+$/, '');
+const canonical = new URL(cesta || '/', Astro.site).href;
+const nahled = new URL('/og.png', Astro.site).href;
+const kotva = (id: string) => (uvodni ? `#${id}` : `/#${id}`);
+const telefon = pevne(znalec.telefon);
+---
+
+<!doctype html>
+<html lang="cs">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="cs_CZ" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={nahled} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#1d4c84" />
+    <meta name="format-detection" content="telephone=no" />
+
+    <link rel="preload" href={franklin} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={franklinExt} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={besley} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={besleyExt} as="font" type="font/woff2" crossorigin />
+
+    {schema && <script type="application/ld+json" is:inline set:html={JSON.stringify(schema)} />}
+  </head>
+  <body>
+    <a class="preskocit" href="#obsah">Přejít na obsah</a>
+
+    <header class="hlavicka">
+      <div class="obal hlavicka__obsah">
+        <a class="znacka" href={uvodni ? '#obsah' : '/'}>
+          <span class="znacka__jmeno">{znalec.jmeno.replace(' ', NBSP)}</span>
+          <span class="znacka__obor">{web.podtitul}</span>
+        </a>
+
+        <nav class="menu" aria-label="Hlavní">
+          <a href={kotva('sluzby')}>Služby</a>
+          <a href={kotva('cenik')}>Ceník</a>
+          <a href={kotva('dotazy')}>Časté dotazy</a>
+        </nav>
+
+        <a class="hlavicka__telefon" href={znalec.telefonOdkaz} aria-label={`Zavolat ${znalec.telefon}`}>
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"
+            ></path>
+          </svg>
+          <span>{telefon}</span>
+        </a>
+
+        <a class="tlacitko tlacitko--zlate hlavicka__poptavka" href={kotva('kontakt')}>
+          <span class="jen-siroke">Nezávazná poptávka</span>
+          <span class="jen-uzke">Poptávka</span>
+        </a>
+      </div>
+    </header>
+
+    <main id="obsah">
+      <slot />
+    </main>
+
+    <footer class="paticka">
+      <div class="obal paticka__obsah">
+        <p>
+          {znalec.jmeno}, znalec zapsaný v&nbsp;seznamu znalců vedeném Ministerstvem spravedlnosti. IČO&nbsp;{znalec.ico}.
+        </p>
+        <ul class="paticka__odkazy">
+          <li><a href={znalec.seznamZnalcu} target="_blank" rel="noopener">Seznam znalců</a></li>
+          <li><a href="/ochrana-osobnich-udaju">Zpracování osobních údajů</a></li>
+          <li>
+            <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener"
+              >Plán města © OpenStreetMap</a
+            >
+          </li>
+        </ul>
+      </div>
+    </footer>
+  </body>
+</html>

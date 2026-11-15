@@ -1,0 +1,33 @@
+---
+// Portrét v úvodu. Dokud ve složce src/assets není soubor portret.jpg (nebo .jpeg, .png, .webp),
+// zobrazí se zástupná silueta. Jakmile tam fotku uložíte, použije se sama – nic dalšího se nemění.
+import { Image } from 'astro:assets';
+import { znalec } from '../data/site';
+
+const fotky = import.meta.glob<{ default: ImageMetadata }>('../assets/portret.{jpg,jpeg,png,webp}', {
+  eager: true,
+});
+const fotka = Object.values(fotky)[0]?.default;
+---
+
+<div class="portret">
+  {
+    fotka ? (
+      <Image
+        class="portret__obraz"
+        src={fotka}
+        alt={znalec.jmeno}
+        widths={[320, 480, 640, 800]}
+        sizes="(min-width: 60em) 320px, 62vw"
+        loading="eager"
+        fetchpriority="high"
+      />
+    ) : (
+      <svg class="portret__obraz portret__obraz--zastupny" viewBox="0 0 320 400" role="img" aria-label="Fotografie bude doplněna">
+        <rect width="320" height="400" class="portret__pozadi" />
+        <circle cx="160" cy="158" r="62" class="portret__silueta" />
+        <path d="M34 400c6-84 58-132 126-132s120 48 126 132z" class="portret__silueta" />
+      </svg>
+    )
+  }
+</div>

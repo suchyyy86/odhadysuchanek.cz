@@ -1,0 +1,112 @@
+---
+// Poptávkový formulář. Odesílá se na /api/poptavka (Vercel funkce v api/poptavka.ts).
+// Funguje i bez JavaScriptu: prohlížeč pak formulář odešle klasicky a funkce přesměruje na /odeslano.
+import { kontakt, znalec } from '../data/site';
+import { pevne } from '../utils/cz';
+
+const f = kontakt.formular;
+---
+
+<form
+  class="formular"
+  action="/api/poptavka"
+  method="post"
+  novalidate
+  data-formular
+  data-telefon={znalec.telefon}
+  data-email={znalec.email}
+>
+  <h3 class="formular__nadpis">{f.nadpis}</h3>
+
+  <div class="pole">
+    <label for="f-jmeno">Jméno a příjmení</label>
+    <input
+      id="f-jmeno"
+      name="jmeno"
+      type="text"
+      autocomplete="name"
+      required
+      maxlength="120"
+      aria-describedby="f-jmeno-chyba"
+    />
+    <p class="pole__chyba" id="f-jmeno-chyba" data-chyba="jmeno" hidden></p>
+  </div>
+
+  <div class="pole-dvojice">
+    <div class="pole">
+      <label for="f-telefon">Telefon</label>
+      <input
+        id="f-telefon"
+        name="telefon"
+        type="tel"
+        autocomplete="tel"
+        inputmode="tel"
+        maxlength="30"
+        aria-describedby="f-kontakt-napoveda f-kontakt-chyba"
+      />
+    </div>
+    <div class="pole">
+      <label for="f-email">E-mail</label>
+      <input
+        id="f-email"
+        name="email"
+        type="email"
+        autocomplete="email"
+        maxlength="200"
+        aria-describedby="f-kontakt-napoveda f-kontakt-chyba"
+      />
+    </div>
+  </div>
+  <p class="pole__napoveda" id="f-kontakt-napoveda">Stačí telefon nebo e-mail – podle toho, jak se vám mám ozvat.</p>
+  <p class="pole__chyba" id="f-kontakt-chyba" data-chyba="kontakt" hidden></p>
+
+  <div class="pole">
+    <label for="f-nemovitost">Co potřebujete ocenit <span class="pole__nepovinne">(nepovinné)</span></label>
+    <select id="f-nemovitost" name="nemovitost">
+      <option value="">Vyberte</option>
+      {f.nemovitosti.map((n) => <option value={n}>{n}</option>)}
+    </select>
+  </div>
+
+  <div class="pole">
+    <label for="f-zprava">Zpráva <span class="pole__nepovinne">(nepovinné)</span></label>
+    <textarea
+      id="f-zprava"
+      name="zprava"
+      rows="4"
+      maxlength="4000"
+      placeholder="Například kde nemovitost leží a k čemu ocenění potřebujete."></textarea>
+  </div>
+
+  {/* Past na roboty: člověk pole nevidí ani se do něj nedostane klávesnicí. */}
+  <div class="pole-past" aria-hidden="true">
+    <label for="f-web">Toto pole nevyplňujte</label>
+    <input id="f-web" name="web_adresa" type="text" tabindex="-1" autocomplete="off" />
+  </div>
+
+  <button class="tlacitko tlacitko--zlate tlacitko--siroke" type="submit" data-odeslat data-text={f.odeslat} data-text-odesila={f.odesila}>
+    {f.odeslat}
+  </button>
+
+  <p class="formular__stav" role="alert" data-stav hidden></p>
+
+  <p class="formular__souhlas">
+    Údaje použiji jen k vyřízení vaší poptávky. <a href="/ochrana-osobnich-udaju">Zpracování osobních údajů</a>
+  </p>
+</form>
+
+<div class="formular formular--hotovo" data-hotovo hidden tabindex="-1">
+  <svg class="formular__fajfka" viewBox="0 0 48 48" aria-hidden="true">
+    <circle cx="24" cy="24" r="23" />
+    <path d="M14 24.5l7 7 13-14.5" />
+  </svg>
+  <h3 class="formular__nadpis">{f.hotovoNadpis}</h3>
+  <p>{f.hotovoText}</p>
+  <p class="formular__zpet">
+    Kdyby to spěchalo, zavolejte na <a href={znalec.telefonOdkaz}>{pevne(znalec.telefon)}</a>.
+  </p>
+</div>
+
+<script>
+  import '../scripts/formular';
+</script>

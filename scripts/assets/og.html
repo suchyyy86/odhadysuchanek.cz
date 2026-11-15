@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="cs">
+  <head>
+    <meta charset="utf-8" />
+    <!-- Zdroj náhledového obrázku public/og.png (1200×630).
+         Skript generate-assets.sh místo __KOREN__ doplní cestu k projektu
+         (kvůli písmům z node_modules a plánu města ze src/assets). -->
+    <style>
+      @font-face {
+        font-family: 'Besley';
+        src: url('__KOREN__/node_modules/@fontsource-variable/besley/files/besley-latin-wght-normal.woff2') format('woff2');
+        font-weight: 400 900;
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122;
+      }
+      @font-face {
+        font-family: 'Besley';
+        src: url('__KOREN__/node_modules/@fontsource-variable/besley/files/besley-latin-ext-wght-normal.woff2') format('woff2');
+        font-weight: 400 900;
+        unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1E00-1E9F;
+      }
+      @font-face {
+        font-family: 'Libre Franklin';
+        src: url('__KOREN__/node_modules/@fontsource-variable/libre-franklin/files/libre-franklin-latin-wght-normal.woff2') format('woff2');
+        font-weight: 100 900;
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122;
+      }
+      @font-face {
+        font-family: 'Libre Franklin';
+        src: url('__KOREN__/node_modules/@fontsource-variable/libre-franklin/files/libre-franklin-latin-ext-wght-normal.woff2') format('woff2');
+        font-weight: 100 900;
+        unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1E00-1E9F;
+      }
+
+      * { box-sizing: border-box; margin: 0; }
+
+      html, body { width: 1200px; height: 630px; overflow: hidden; }
+
+      body {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 70px 80px 64px;
+        background: #1d4c84;
+        color: #fff;
+        font-family: 'Libre Franklin', sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      /* Plán Těšína: přisazený vpravo (Olše běží podél okraje), směrem k textu mizí. */
+      .mapa {
+        position: absolute;
+        right: 0;
+        top: 50%;
+        width: 1150px;
+        height: 1150px;
+        translate: 0 -50%;
+        -webkit-mask-image: linear-gradient(to right, transparent 36%, #000 60%);
+        mask-image: linear-gradient(to right, transparent 36%, #000 60%);
+      }
+
+      .text { position: relative; }
+
+      .jmeno {
+        font: 600 108px/1 'Besley', serif;
+        letter-spacing: -0.012em;
+      }
+
+      .role {
+        margin-top: 26px;
+        font: 400 40px/1.2 'Besley', serif;
+        color: #d6e3f2;
+      }
+
+      .dole {
+        position: relative;
+        display: flex;
+        gap: 40px;
+        align-items: baseline;
+        font-size: 29px;
+        font-weight: 500;
+      }
+
+      .dole span:last-child { color: #d6e3f2; font-weight: 400; }
+    </style>
+  </head>
+  <body>
+    <img class="mapa" src="__KOREN__/src/assets/mapa-tesin.svg" alt="" />
+    <div class="text">
+      <div class="jmeno">Ing. Bohdan<br />Suchanek</div>
+      <div class="role">odhady nemovitostí<br />a znalecké posudky</div>
+    </div>
+    <div class="dole">
+      <span>odhadysuchanek.cz</span>
+      <span>Český Těšín a okolí</span>
+    </div>
+  </body>
+</html>

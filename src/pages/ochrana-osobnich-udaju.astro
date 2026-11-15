@@ -1,0 +1,57 @@
+---
+// NÁVRH – stručné poučení podle čl. 13 GDPR. Před spuštěním webu ho nechte projít panem Suchankem
+// a doplňte, přes koho formulář e-maily skutečně odesílá (teď počítá s Vercelem a Resendem).
+import Base from '../layouts/Base.astro';
+import { znalec } from '../data/site';
+import { pevne } from '../utils/cz';
+---
+
+<Base
+  title="Zpracování osobních údajů | Ing. Bohdan Suchanek"
+  description="Jak Ing. Bohdan Suchanek nakládá s osobními údaji z poptávkového formuláře."
+>
+  <article class="obal stranka">
+    <div class="stranka__obsah">
+      <h1>Zpracování osobních údajů</h1>
+
+      <h2>Kdo údaje spravuje</h2>
+      <p>
+        {znalec.jmeno}, {znalec.ulice}, {`${pevne(znalec.psc)} ${znalec.mesto}`}, IČO&nbsp;{znalec.ico}. Kontakt: <a
+          href={znalec.telefonOdkaz}
+          >{pevne(znalec.telefon)}</a
+        >, <a href={`mailto:${znalec.email}`}>{znalec.email}</a>.
+      </p>
+
+      <h2>Jaké údaje a proč</h2>
+      <p>
+        Z&nbsp;poptávkového formuláře dostanu vaše jméno, telefon nebo e-mail a&nbsp;to, co mi napíšete do zprávy.
+        Údaje používám jen k&nbsp;tomu, abych vám mohl odpovědět a&nbsp;připravit nabídku ocenění. Právním
+        základem je jednání o&nbsp;smlouvě na vaši žádost.
+      </p>
+
+      <h2>Jak dlouho je uchovávám</h2>
+      <p>
+        Pokud ke spolupráci nedojde, poptávku do 12&nbsp;měsíců smažu. Když posudek vypracuji, uchovávám
+        související údaje po dobu, kterou znalcům ukládají právní předpisy.
+      </p>
+
+      <h2>Kdo další se k&nbsp;nim dostane</h2>
+      <p>
+        Formulář odesílá zprávu e-mailem. Technicky ji zpracují poskytovatel hostingu webu (Vercel)
+        a&nbsp;služba pro odesílání e-mailů (Resend). Nikomu dalšímu údaje nepředávám a&nbsp;nepoužívám je
+        k&nbsp;reklamě. Web nepoužívá cookies ani měření návštěvnosti.
+      </p>
+
+      <h2>Vaše práva</h2>
+      <ul>
+        <li>zeptat se, jaké údaje o&nbsp;vás mám, a&nbsp;dostat jejich kopii,</li>
+        <li>požádat o&nbsp;opravu nebo smazání,</li>
+        <li>vznést námitku proti zpracování,</li>
+        <li>podat stížnost u&nbsp;Úřadu pro ochranu osobních údajů (uoou.gov.cz).</li>
+      </ul>
+      <p>Stačí mi zavolat nebo napsat na kontakty uvedené výše.</p>
+
+      <a class="tlacitko tlacitko--zlate" href="/#kontakt">Zpět na kontakt</a>
+    </div>
+  </article>
+</Base>

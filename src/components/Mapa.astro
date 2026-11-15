@@ -1,0 +1,13 @@
+---
+// Pozadí úvodu: skutečný plán centra Českého Těšína – budovy, ulice, železnice a Olše.
+// Kresbu vyrábí `node scripts/mapa-tesina.mjs` z dat OpenStreetMap do src/assets/mapa-tesin.svg.
+// Je to jen dekorace: nic se na ní nevyznačuje, žádná adresa ani konkrétní dům.
+import mapa from '../assets/mapa-tesin.svg?url';
+
+interface Props {
+  class?: string;
+}
+const { class: trida } = Astro.props;
+---
+
+<img class:list={['mapa', trida]} src={mapa} alt="" width="1000" height="1000" decoding="async" fetchpriority="low" />
