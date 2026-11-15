@@ -5,6 +5,8 @@ dist/
 .astro/
 # stažená mapová data (scripts/mapa-tesina.mjs)
 .cache/
+# původní snímek k fotce v úvodu – na web jde jen výřez (scripts/portret.mjs)
+scripts/assets/portret-puvodni*
 
 # dependencies
 node_modules/

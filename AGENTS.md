@@ -22,7 +22,7 @@ npx astro check              # typová kontrola
 | Strukturovaná data (služba, ceník, znalec, dotazy) | `src/data/seo.ts` – skládá se ze `site.ts` |
 | Shrnutí webu pro jazykové modely | `src/pages/llms.txt.ts` → `/llms.txt`, také ze `site.ts` |
 | Plán Těšína v pozadí úvodu | `src/assets/mapa-tesin.svg`, vyrábí ho `node scripts/mapa-tesina.mjs` |
-| Portrét – fotka nebo zástupná silueta | `src/components/Portret.astro`, fotka `src/assets/portret.jpg` |
+| Fotka v úvodu nebo zástupná silueta | `src/components/Portret.astro`, fotka `src/assets/portret.jpg` (výřez vyrábí `node scripts/portret.mjs`) |
 | Formulář | `src/components/Formular.astro`, `src/scripts/formular.ts` |
 | Odeslání poptávky e-mailem (Vercel funkce) | `api/poptavka.ts` |
 | Barvy, písma, rozložení | `src/styles/global.css` |
@@ -49,6 +49,10 @@ npx astro check              # typová kontrola
   běžela podél pravého okraje. Je to jen pozadí: nic se na něm nevyznačuje, žádná adresa ani konkrétní
   dům. Výřez a měřítko se nastavují konstantami ve `scripts/mapa-tesina.mjs`. Odkaz na zdroj mapy
   v patičce vyžaduje licence – nemazat.
+- **Fotka v úvodu** je čtvercový výřez ze snímku z předávání ocenění. Uživatel na ní chce vidět
+  celou chvíli předávání (podání ruky s předávajícím), ne jen hlavu pana Suchanka. Původní snímek
+  (`scripts/assets/portret-puvodni.jpeg`) je v `.gitignore` a necommituje se. Skript ho jen ořízne
+  a zmenší – fotku jinak neupravuj (žádné ztmavování ani retuše, ty si uživatel dělá sám).
 - **Česká typografie:** texty z dat prožeň přes `cz()` z `src/utils/cz.ts`, telefon, PSČ, datum a cenu
   přes `pevne()`. Pevnou mezeru piš konstantou `NBSP` – zápis `\u00a0` přímo ve zdrojáku se při
   ukládání nástrojem snadno změní na neviditelný znak.

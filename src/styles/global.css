@@ -368,9 +368,10 @@ main {
   justify-items: start;
 }
 
+/* Fotka je čtverec přes celou šířku sloupce, nejvýš 26rem – na telefonu tedy skoro přes celý displej. */
 .uvod__foto {
   position: relative;
-  width: min(100%, 15rem);
+  width: min(100%, 26rem);
 }
 
 /* Plán Těšína: přisazený k pravému okraji úvodu (Olše běží podél něj) a svisle vystředěný
@@ -398,7 +399,7 @@ main {
   display: block;
   width: 100%;
   height: auto;
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 1;
   object-fit: cover;
   /* Fotka na výšku se ořízne spíš zespodu – obličej bývá v horní části. */
   object-position: 50% 25%;
@@ -906,10 +907,6 @@ main {
     grid-template-columns: 1fr 1fr;
   }
 
-  .uvod__foto {
-    width: min(100%, 17rem);
-  }
-
   .uvod__mapa {
     width: 72rem;
   }
@@ -924,10 +921,6 @@ main {
   .uvod__text::before {
     inset: -100vh calc(0.5rem - var(--mezera-uvodu)) -100vh -100vw;
     background: linear-gradient(to left, transparent, var(--vykres) var(--mezera-uvodu));
-  }
-
-  .uvod__foto {
-    width: min(100%, 17rem);
   }
 
   .uvod__mapa {
@@ -961,10 +954,6 @@ main {
 }
 
 @media (min-width: 80em) {
-  .uvod__foto {
-    width: min(100%, 20rem);
-  }
-
   /* Na hodně širokém monitoru musí kresba dosáhnout až pod text, proto roste s oknem. */
   .uvod__mapa {
     width: max(94rem, 55vw);

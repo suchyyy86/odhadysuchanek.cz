@@ -55,6 +55,8 @@ export const uvod = {
   // NÁVRH – formulace.
   text: 'Oceňuji byty, domy a pozemky v Českém Těšíně a okolí – pro dědictví, prodej, rozvod i soud.',
   tlacitko: 'Poslat nezávaznou poptávku',
+  // Popis fotky pro čtečky obrazovky a vyhledávače. Co na fotce je, řekl uživatel (předávání ocenění).
+  fotka: 'Ing. Bohdan Suchanek přebírá ocenění',
 };
 
 // NÁVRH – texty. Odvětví „Oceňování nemovitých věcí“ a specializace na lesní pozemky jsou OVĚŘENY.

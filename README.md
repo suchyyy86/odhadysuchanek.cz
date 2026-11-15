@@ -25,8 +25,14 @@ spravedlnosti) nebo `NÁVRH` (pracovní text či cena, kterou má potvrdit pan S
 
 ### Fotka
 
-Uložte portrét jako `src/assets/portret.jpg` (stačí 1200 px na šířku, ideálně na výšku). Zástupná
-silueta zmizí sama, web si fotku ořízne na poměr 4 : 5 a zmenší.
+V úvodu je `src/assets/portret.jpg` – čtvercový výřez z fotky z předávání ocenění (pan Suchanek
+si podává ruku s předávajícím). Vyrábí ho `node scripts/portret.mjs` z původního snímku
+`scripts/assets/portret-puvodni.jpeg`; výřez se nastavuje konstantou nahoře ve skriptu. Původní
+snímek se do gitu neukládá, na web jde jen zmenšený výřez.
+
+Jinou fotku stačí uložit jako `src/assets/portret.jpg` (aspoň 1100 px na šířku). Web si ji ořízne
+na čtverec a zmenší. Bez fotky se zobrazí zástupná silueta. Popis fotky pro čtečky a vyhledávače
+je v `src/data/site.ts` (`uvod.fotka`).
 
 ### Formulář
 
@@ -55,9 +61,9 @@ ve skriptu; s `--stahnout` si data stáhne znovu).
 
 1. Projít s panem Suchankem všechno označené `NÁVRH` v `src/data/site.ts` – hlavně ceník
    a výčet obcí.
-2. Doplnit fotku.
-3. Nastavit proměnné pro formulář a poslat si zkušební poptávku z nasazeného webu.
-4. Ve Vercelu připojit doménu `odhadysuchanek.cz` jako hlavní a `www` na ni přesměrovat
+2. Nastavit proměnné pro formulář a poslat si zkušební poptávku z nasazeného webu.
+3. Ve Vercelu připojit doménu `odhadysuchanek.cz` jako hlavní a `www` na ni přesměrovat
    (web má kanonické adresy bez `www`).
+4. Smazat `middleware.js` – drží testovací web za heslem a mimo vyhledávače.
 
 Pro AI agenty jsou konvence projektu v [AGENTS.md](AGENTS.md).
