@@ -23,7 +23,8 @@ export const znalec = {
   jmenoBezTitulu: 'Bohdan Suchanek',
   telefon: '728 135 767',
   telefonOdkaz: 'tel:+420728135767',
-  email: 'bohdans@volny.cz',
+  // Kontaktní adresa zadaná provozovatelem webu.
+  email: 'info@odhadysuchanek.cz',
   ulice: 'Frýdecká 1350/52',
   psc: '737 01',
   mesto: 'Český Těšín',
