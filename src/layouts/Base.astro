@@ -41,6 +41,8 @@ const telefon = pevne(znalec.telefon);
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     {noindex && <meta name="robots" content="noindex" />}
+    {/* Ověření vlastnictví webu pro Seznam Webmaster. Nemazat – Seznam si ho čas od času ověřuje znovu. */}
+    {uvodni && <meta name="seznam-wmt" content="nPkiFv56Q9UF7gJgnk8UfHug3rXj1wtU" />}
 
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="cs_CZ" />
