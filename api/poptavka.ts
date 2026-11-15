@@ -2,7 +2,7 @@
 //
 // Proměnné prostředí (Vercel → Settings → Environment Variables, lokálně soubor .env):
 //   RESEND_API_KEY  klíč z resend.com
-//   CONTACT_EMAIL   adresa, na kterou mají poptávky chodit
+//   CONTACT_EMAIL   adresa, na kterou mají poptávky chodit; víc adres se odděluje čárkou
 //   CONTACT_FROM    odesílatel, např. „Web odhadysuchanek.cz <poptavka@odhadysuchanek.cz>“
 //                   (doména musí být v Resendu ověřená)
 //
@@ -137,15 +137,21 @@ export async function POST(request: Request): Promise<Response> {
     )
     .join('')}</table></div>`;
 
+  // Příjemců může být víc (oddělených čárkou) – když jedna schránka zprávu nepřijme, dojde jinam.
+  const prijemci = (process.env.CONTACT_EMAIL ?? '')
+    .split(/[,;]/)
+    .map((adresa) => adresa.trim())
+    .filter((adresa) => JE_EMAIL.test(adresa));
+
   if (process.env.POPTAVKA_NANECISTO === '1') {
-    console.log(`\n[poptávka nanečisto – e-mail se neodesílá]\n${predmet}\n${jakoText}\n`);
+    const komuBySla = prijemci.join(', ') || '(CONTACT_EMAIL není nastavený)';
+    console.log(`\n[poptávka nanečisto – e-mail se neodesílá]\nKomu: ${komuBySla}\n${predmet}\n${jakoText}\n`);
     return odpovez(klasicky, 200);
   }
 
   const klic = process.env.RESEND_API_KEY;
-  const komu = process.env.CONTACT_EMAIL;
   const od = process.env.CONTACT_FROM ?? 'Web odhadysuchanek.cz <poptavka@odhadysuchanek.cz>';
-  if (!klic || !komu) {
+  if (!klic || prijemci.length === 0) {
     console.error('Poptávka nedoručena: chybí RESEND_API_KEY nebo CONTACT_EMAIL.');
     return odpovez(klasicky, 503, NEDORUCENO);
   }
@@ -156,7 +162,7 @@ export async function POST(request: Request): Promise<Response> {
       headers: { Authorization: `Bearer ${klic}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
         from: od,
-        to: [komu],
+        to: prijemci,
         subject: predmet,
         text: jakoText,
         html: jakoHtml,

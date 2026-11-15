@@ -34,7 +34,7 @@ Ve Vercelu (Settings → Environment Variables) nastavte:
 | Proměnná | Hodnota |
 |---|---|
 | `RESEND_API_KEY` | klíč z Resendu |
-| `CONTACT_EMAIL` | adresa, kam mají poptávky chodit |
+| `CONTACT_EMAIL` | adresa, kam mají poptávky chodit; víc adres oddělte čárkou |
 | `CONTACT_FROM` | odesílatel, např. `Web odhadysuchanek.cz <poptavka@odhadysuchanek.cz>` – doména musí být v Resendu ověřená |
 
 Dokud klíč chybí, formulář na webu ohlásí, že se poptávku nepodařilo odeslat, a nabídne telefon
