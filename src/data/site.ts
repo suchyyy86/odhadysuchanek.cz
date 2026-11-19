@@ -9,7 +9,9 @@ import { tisice } from '../utils/cz';
 export const web = {
   url: 'https://odhadysuchanek.cz',
   // Úředně je to „znalec“, lidé ale hledají „soudní znalec“ – proto je v titulku, popisu a hlavičce.
-  titulek: 'Odhady nemovitostí Český Těšín – soudní znalec Ing. Suchanek',
+  // Obě části titulku začínají velkým písmenem: Google je podle dotazu prohazuje a s malým
+  // písmenem pak titulek začínal „soudní znalec…“.
+  titulek: 'Odhady nemovitostí Český Těšín | Soudní znalec Ing. Suchanek',
   popis:
     'Soudní znalec Ing. Bohdan Suchanek: znalecké posudky a odhady nemovitostí v Českém Těšíně a okolí. Byty, domy a pozemky pro dědictví, prodej, rozvod i soud.',
   /** Řádek pod jménem v hlavičce. */

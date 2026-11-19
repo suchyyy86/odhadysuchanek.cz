@@ -64,5 +64,8 @@ npx astro check              # typová kontrola
   záměrně; počet odeslání hlídá pravidlo ve Firewallu na Vercelu.
 - **Písma jen z vlastního webu** (`@fontsource`), žádné cizí domény – jinak je potřeba upravit CSP
   ve `vercel.json`. Web nepoužívá cookies ani měření.
+- **HTML se nezhušťuje** (`compressHTML: false`). Bez mezer mezi prvky čtou vyhledávače sousední
+  texty slepeně – Google takhle ukázal „Suchanekodhady nemovitostí“. Mezi jménem a oborem v H1 je
+  proto i skrytá pomlčka. Obě části titulku začínají velkým písmenem, protože je Google prohazuje.
 - **URL bez koncového lomítka** (`trailingSlash: 'never'`, `build.format: 'file'`, ve `vercel.json`
   `cleanUrls`). Každá stránka má právě jeden H1.

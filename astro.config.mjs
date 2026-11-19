@@ -97,6 +97,9 @@ export default defineConfig({
   // Jedna adresa na stránku: /ochrana-osobnich-udaju, ne s lomítkem ani s .html.
   // Na Vercelu to dotahuje vercel.json (cleanUrls + trailingSlash: false).
   trailingSlash: 'never',
+  // Mezery mezi prvky v HTML necháváme. Při zhuštění na sebe sousední prvky navazují bez mezery
+  // a vyhledávače pak čtou „Suchanekodhady nemovitostí“ – přesně tak to Google ukázal ve výsledcích.
+  compressHTML: false,
   build: {
     format: 'file',
   },
